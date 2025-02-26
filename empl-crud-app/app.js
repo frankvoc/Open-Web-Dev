@@ -1,31 +1,49 @@
 const express = require('express');
 const hbs = require('hbs');
-const mongoose = require('mongoose')
-const dotenv = require('dotenv');
-require('./helpers');
-
-dotenv.config();
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-//middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/public'));
-
-//hbs setup
+// Set up Handlebars
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
-hbs.registerPartials(__dirname + '/views/partials');
 
-//routiing
-const employeeRoutes = require('./routes/employeeRoutes');
-app.use('/employees', employeeRoutes);
+// Middleware to parse JSON bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-//mongodb connection
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .catch(err => console.log(err));
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+});
+
+// Define a simple schema and model
+const itemSchema = new mongoose.Schema({
+  name: String,
+});
+
+const Item = mongoose.model('Item', itemSchema);
+
+// Routes
+app.get('/', async (req, res) => {
+  const items = await Item.find();
+  res.render('view', { items });
+});
+
+app.post('/add', async (req, res) => {
+  const newItem = new Item({ name: req.body.name });
+  await newItem.save();
+  res.redirect('/');
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
