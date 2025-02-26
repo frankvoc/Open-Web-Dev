@@ -4,34 +4,50 @@ const exphbs = require('express-handlebars');
 const passport = require('passport');
 const authRoutes = require('./routes/auth');
 const config = require('./config');
-
-//init our express app
+const cookieParser = require('cookie-parser');
+const User = require('./models/User');
+const jwt = require('jsonwebtoken');
+//init EXPRESS app
 const app = express();
-
-//Mongo connection
+//mongo connection
 mongoose.connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
-
-//hbs
+//static files  
+app.use(express.static('public'));
+//setup hbs
 app.engine('hbs', exphbs.engine({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', 'hbs');
-
-//middleware
+//the middleware
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(passport.initialize());
-
-//routing
+//loading passport config
+require('./config/passport')(passport);
+//routes
 app.use('/auth', authRoutes);
-
-//root
+//route for root
 app.get('/', (req, res) => {
-  res.redirect('/auth/register');
+  res.redirect('/auth/login');
 });
-app.get('/dashboard', (req, res) => {
-    res.render('dashboard');
+app.get('/dashboard', async (req, res) => {
+    const token = req.cookies.token;
+    //error handling if user login is not detected
+    if (!token) {
+      return res.render('error', { message: 'Please log in to access the dashboard.' });
+    }
+    try {
+      const decoded = jwt.verify(token, config.jwtSecret);
+      const user = await User.findById(decoded.userId);
+  
+      if (!user) {
+        return res.render('error', { message: 'Please log in to access the dashboard.' });
+      }
+      res.render('dashboard', { username: user.username });
+    } catch (err) {
+      return res.render('error', { message: 'Please log in to access the dashboard.' });
+    }
   });
-
-//start on port 5k
+//port
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
