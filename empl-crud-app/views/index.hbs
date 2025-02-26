@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Employee</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+  <h1>Create Employee</h1>
+  <form action="/employees" method="POST">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" required><br>
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" required><br>
+    <label for="department">Department:</label>
+    <select id="department" name="department" required>
+      <option value="HR">HR</option>
+      <option value="Engineering">Engineering</option>
+      <option value="Marketing">Marketing</option>
+      <option value="Information Technology">Information Technology</option>
+      <option value="Game Design">Game Design</option>
+      <option value="Business Operations">Business Operations</option>
+    </select><br>
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" name="startDate" required><br>
+    <label for="jobTitle">Job Title:</label>
+    <input type="text" id="jobTitle" name="jobTitle" required><br>
+    <label for="salary">Salary:</label>
+    <input type="number" id="salary" name="salary" required><br>
+    <button type="submit">Create Employee</button>
+  </form>
+  <a href="/employees">View All Employees</a>
+</body>
+</html>

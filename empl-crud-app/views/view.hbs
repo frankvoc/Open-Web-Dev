@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>View Employees</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+  <h1>Employees</h1>
+  <table border="1">
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Department</th>
+      <th>Start Date</th>
+      <th>Job Title</th>
+      <th>Salary</th>
+      <th>Actions</th>
+    </tr>
+    {{#each employees}}
+      <tr>
+        <td>{{this.firstName}}</td>
+        <td>{{this.lastName}}</td>
+        <td>{{this.department}}</td>
+        <td>{{this.startDate}}</td>
+        <td>{{this.jobTitle}}</td>
+        <td>{{this.salary}}</td>
+        <td>
+          <a href="/employees/update/{{this._id}}">Update</a>
+          <a href="/employees/delete/{{this._id}}">Delete</a>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+  <a href="/employees/create">Create New Employee</a>
+</body>
+</html>
