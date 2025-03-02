@@ -1,5 +1,5 @@
 module.exports = {
-    mongoURI: 'mongodb+srv://FVoc:<FVocTest>@users.jwwwh.mongodb.net/?retryWrites=true&w=majority&appName=Users',
+    mongoURI: 'mongodb+srv://FVoc:<FVOC1125>@users.jwwwh.mongodb.net/?retryWrites=true&w=majority&appName=Users',
     jwtSecret: '8f8256878cd4bdd91646ea8a39443798e8312df5a13cffb66ad465607b7c4eb3'
   };
   
