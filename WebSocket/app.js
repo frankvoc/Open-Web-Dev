@@ -6,15 +6,12 @@ const OpenAI = require("openai");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-app.use(express.static("public"));
 const openai = new OpenAI({
     apiKey: process.env.API_KEY,
 });
+app.use(express.static("public"));
 const users = new Set();
-
 io.on("connection", (socket) => {
-    console.log("A new user connected to the server.");
-
     socket.on("chat message", async (msg) => {
         io.emit("chat message", { text: `${socket.username || "User"}: ${msg}`, fromBot: false });
         if (msg.startsWith("@bot ")) {
@@ -27,8 +24,7 @@ io.on("connection", (socket) => {
                 const botResponse = completion.choices[0].message.content;
                 io.emit("chat message", { text: "ChatGPT: " + botResponse, fromBot: true });
             } catch (error) {
-                console.error("Error with OpenAI API:", error);
-                io.emit("chat message", {text:"ChatGPT: OpenAI is having issues, please wait", fromBot: true});
+                io.emit("chat message", {text:"OpenAI Error.", fromBot: true});
             }
         }
     });
@@ -43,4 +39,6 @@ io.on("connection", (socket) => {
         io.emit("user list", Array.from(users));
     });
 });
-server.listen(3000);
+server.listen(3000, () => {
+    console.log("Server running on port 3000");
+});
