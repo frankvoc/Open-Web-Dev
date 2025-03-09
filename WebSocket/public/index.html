@@ -33,12 +33,10 @@
         <h3>Active Users</h3>
         <ul id="user-list"></ul>
     </div>
-    
     <script>
         const username = prompt("Enter your username");
         const socket = io();
-        socket.emit("set username", username);
-
+        socket.emit("set username", username)
         function SendMessage(){
             const input = document.getElementById("message-input");
 
@@ -47,19 +45,16 @@
                 input.value = "";
             }
         }
-
-        socket.on("chat message", (msg)=>{
+        socket.on("chat message", (msg) => {
             const chatBox = document.getElementById("chat-box");
             const messageElement = document.createElement("p");
-
-            messageElement.textContent = msg;
+            messageElement.textContent = msg.text;
             chatBox.appendChild(messageElement);
             chatBox.scrollTop = chatBox.scrollHeight;
-        })
-
+        });
         socket.on("user list", (userlist)=>{
             console.log("Active Users", userlist);
-            const userListElement = document.getElementById("user-list");
+            const userListElement = document.getElementById("user-list")
             userListElement.innerHTML = "";
 
             userlist.forEach(user => {
@@ -67,9 +62,8 @@
                 li.innerHTML = user;
                 userListElement.appendChild(li);
             });
-
-        });
+        })
+        
     </script>
-
 </body>
 </html>
