@@ -16,15 +16,18 @@ io.on("connection", (socket) => {
         io.emit("chat message", { text: `${socket.username || "User"}: ${msg}`, fromBot: false });
         if (msg.startsWith("@bot ")) {
             const userMessage = msg.replace("@bot ", "");
+            io.emit("bot typing", { username: "ChatGPT" });//typing event
             try {
                 const completion = await openai.chat.completions.create({
                     model: "gpt-4o-mini",
                     messages: [{ role: "user", content: userMessage }],
                 });
                 const botResponse = completion.choices[0].message.content;
+                io.emit("bot stop typing", { username: "ChatGPT" }); //stop typing event
                 io.emit("chat message", { text: "ChatGPT: " + botResponse, fromBot: true });
             } catch (error) {
-                io.emit("chat message", {text:"OpenAI Error.", fromBot: true});
+                io.emit("bot stop typing", { username: "ChatGPT" }); //stop typing event
+                io.emit("chat message", { text: "OpenAI Error.", fromBot: true });
             }
         }
     });
