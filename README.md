@@ -14,6 +14,13 @@ Steps for Auth:
 5. Go to http://localhost:5000/ (or http://localhost:5000/auth/login)
 6. Test
 
+Steps for ChatGPT:
+1. Clone this repo
+2. CD into WebSocket
+3. run npm install
+4. run node app.js
+5. Go to http://localhost:3000/
+6. Test
 Dependencies used:
 express
 hbs 
