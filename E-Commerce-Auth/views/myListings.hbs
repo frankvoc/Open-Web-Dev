@@ -1,0 +1,12 @@
+<h1>My Listings</h1>
+<ul>
+  {{#each listings}}
+    <li>
+      <h2>{{title}}</h2>
+      <p>{{description}}</p>
+      <p>Current Bid: ${{currentBid}}</p>
+      <p>End Time: {{endTime}}</p>
+      <a href="/listing/user/{{_id}}">My Listings</a>
+    </li>
+  {{/each}}
+</ul>

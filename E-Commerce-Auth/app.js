@@ -7,6 +7,8 @@ const config = require('./config');
 const cookieParser = require('cookie-parser');
 const User = require('./models/User');
 const jwt = require('jsonwebtoken');
+const listingRoutes = require('./routes/listing');
+const bidRoutes = require('./routes/bids');
 //init EXPRESS app
 const app = express();
 //mongo connection
@@ -26,6 +28,8 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 //routes
 app.use('/auth', authRoutes);
+app.use('/listing', listingRoutes);
+app.use('/bids', bidRoutes);
 //route for root
 app.get('/', (req, res) => {
   res.redirect('/auth/login');

@@ -1,0 +1,10 @@
+<h1>My Bids</h1>
+<ul>
+  {{#each bids}}
+    <li>
+      <p>Bid Amount: ${{amount}} on {{listing.title}}</p>
+      <p>Placed on: {{timestamp}}</p>
+      <a href="/listing/{{listing._id}}">View Listing</a>
+    </li>
+  {{/each}}
+</ul>

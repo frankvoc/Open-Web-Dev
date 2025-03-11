@@ -1,3 +1,15 @@
 <h2>Dashboard</h2>
 <p>Welcome to your dashboard, {{username}}!</p>
+<nav>
+  <ul>
+    <li><a href="/listing">Browse Listings</a></li>
+    <a href="/listing/user/{{this._id}}">My Listings</a>
+    <li><a href="/bids/user/{{_id}}">My Bids</a></li>
+    <li><a href="/auth/logout">Logout</a></li>
+  </ul>
+</nav>
+
+<section>
+  <h2>Your Recent Activity</h2>
+</section>
 <a href="/auth/logout">Logout</a>
