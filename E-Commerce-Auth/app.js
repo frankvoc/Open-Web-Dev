@@ -47,7 +47,7 @@ app.get('/dashboard', async (req, res) => {
       if (!user) {
         return res.render('error', { message: 'Please log in to access the dashboard.' });
       }
-      res.render('dashboard', { username: user.username });
+      res.render('dashboard', { username: user.username, user  });
     } catch (err) {
       return res.render('error', { message: 'Please log in to access the dashboard.' });
     }
